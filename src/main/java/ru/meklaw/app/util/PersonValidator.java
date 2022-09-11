@@ -7,6 +7,8 @@ import org.springframework.validation.Validator;
 import ru.meklaw.app.dao.PersonDAO;
 import ru.meklaw.app.models.Person;
 
+import java.util.Optional;
+
 @Component
 public class PersonValidator implements Validator {
     private final PersonDAO personDAO;
@@ -24,7 +26,10 @@ public class PersonValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         Person person = (Person) target;
+        Optional<Person> oldPerson = personDAO.show(person.getId());
         //есть ли человек с таким мылом в БД
+        if (oldPerson.isPresent() && oldPerson.get().getEmail().equals(person.getEmail()))
+            return;
         if (personDAO.show(person.getEmail()).isPresent())
             errors.rejectValue("email", "", "this email is already taken");
     }
