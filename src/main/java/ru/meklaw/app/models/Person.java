@@ -1,9 +1,6 @@
 package ru.meklaw.app.models;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 
 public class Person {
@@ -17,6 +14,8 @@ public class Person {
     @Email(message = "Email should be valid")
     private String email;
 //    Страна, Город, индекс (6 цифр)
+//    Russia, Moscow, 123456
+    @Pattern(regexp = "[A-Z]\\w+, [A-Z]\\w+, \\d{6}", message = "Your address should be in this format: Country, City, Postal Code (6 digits)")
     private String address;
 
     public Person() {
