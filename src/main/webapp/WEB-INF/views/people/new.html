@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Новый посетитель</title>
+    <meta charset="UTF-8">
+    <title>Новый посетитель</title>
 </head>
 <body>
 
 <form th:method="POST" th:action="@{/people}" th:object="${person}">
-  <label for="name">Введите ФИО:</label>
-  <input type="text" th:field="*{fullName}" id="name">
-  <div style="color: red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Name error</div>
-  <br/>
+    <label for="name">Введите ФИО:</label>
+    <input type="text" th:field="*{fullName}" id="name">
+    <div style="color: red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Name error</div>
+    <br/>
 
-  <label for="dateOfBirthday">Введите дату рождения:</label>
-  <input type="date" th:field="*{dateOfBirthday}" id="dateOfBirthday">
-  <div style="color: red" th:if="${#fields.hasErrors('dateOfBirthday')}" th:errors="*{dateOfBirthday}">DateOfBirthday error</div>
-  <br/>
+    <label for="dateOfBirthday">Введите дату рождения:</label>
+    <input type="date" th:field="*{dateOfBirthday}" id="dateOfBirthday">
+    <div style="color: red" th:if="${#fields.hasErrors('dateOfBirthday')}" th:errors="*{dateOfBirthday}">DateOfBirthday
+        error
+    </div>
+    <br/>
 
-  <input type="submit" value="Добавить!">
+    <input type="submit" value="Добавить!">
 </form>
 
 </body>
