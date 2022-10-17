@@ -10,7 +10,7 @@ public class Person {
     private int id;
     @NotEmpty(message = "Name should not be empty")
     @Size(min = 3, max = 30, message = "Name should to be between 3 and 30 characters")
-    private String name;
+    private String fullName;
     @Min(value = 0, message = "Age should be greater than 0")
     private Date dateOfBirthday;
 
@@ -18,9 +18,9 @@ public class Person {
     public Person() {
     }
 
-    public Person(int id, String name, Date dateOfBirthday) {
+    public Person(int id, String fullName, Date dateOfBirthday) {
         this.id = id;
-        this.name = name;
+        this.fullName = fullName;
         this.dateOfBirthday = dateOfBirthday;
     }
 
@@ -32,12 +32,12 @@ public class Person {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public Date getDateOfBirthday() {
