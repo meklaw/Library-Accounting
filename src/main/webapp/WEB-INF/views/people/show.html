@@ -6,13 +6,13 @@
 </head>
 <body>
 
-<p th:text="${person.getName() + ', ' + person.getAge()}">VALUE</p>
-<p th:text="${'Email: ' + person.getEmail()}">VALUE</p>
-<p th:text="${person.getId()}">VALUE</p>
+<p th:text="${'Id: ' + person.getId()()}">VALUE</p>
+<p th:text="${'ФИО: ' + person.getName()}">VALUE</p>
+<p th:text="${'Дата рождения:' + person.getDateOfBirthday()}">VALUE</p>
 
-<a th:href="@{/people/{id}/edit(id=${person.getId()})}">Edit</a>
+<a th:href="@{/people/{id}/edit(id=${person.getId()})}">Изменить данные</a>
 <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
-    <input type="submit" value="Delete">
+    <input type="submit" value="Удалить">
 </form>
 </body>
 </html>
