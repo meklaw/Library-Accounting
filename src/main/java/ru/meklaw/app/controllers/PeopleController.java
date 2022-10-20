@@ -10,6 +10,8 @@ import ru.meklaw.app.dao.PersonDAO;
 import ru.meklaw.app.models.Person;
 import ru.meklaw.app.util.PersonValidator;
 
+import java.util.Optional;
+
 /**
  * @author Neil Alishev
  */
@@ -35,7 +37,11 @@ public class PeopleController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("person", personDAO.show(id).orElse(null));
+        Optional<Person> showPerson = personDAO.show(id);
+        if (showPerson.isEmpty())
+            return "people/show_error";
+
+        model.addAttribute("person", showPerson.get());
         return "people/show";
     }
 
