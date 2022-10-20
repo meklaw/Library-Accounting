@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Книги</title>
+</head>
+<body>
+
+<div th:each="book : ${books}">
+    <a th:href="@{/book/{id}(id=${book.getId()})}"
+       th:text="${book.getName() + ', ' + book.getAuthor() + ', ' + book.getYear()}">
+    </a>
+    <div th:if="${book.getPersonId() == 0}" th:text="свободна">свободна</div>
+    <div th:if="${book.getPersonId() != 0}" th:text="занята">занята</div>
+</div>
+
+<br/>
+<hr/>
+
+<a href="/books/new">Добавить новую книгу</a>
+<br/>
+<a href="/people">К списку клиентов</a>
+
+</body>
+</html>
