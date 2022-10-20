@@ -25,12 +25,11 @@ public class PersonValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        Person person = (Person) target;
-        Optional<Person> oldPerson = personDAO.show(person.getId());
-        //есть ли человек с таким мылом в БД
-        if (oldPerson.isPresent() && oldPerson.get().getEmail().equals(person.getEmail()))
+        Person newPersonData = (Person) target;
+        Optional<Person> oldPersonData = personDAO.show(newPersonData.getId());
+        if (oldPersonData.isPresent() && oldPersonData.get().getFullName().equals(newPersonData.getFullName()))
             return;
-        if (personDAO.show(person.getEmail()).isPresent())
-            errors.rejectValue("email", "", "this email is already taken");
+        if (personDAO.show(newPersonData.getFullName()).isPresent())
+            errors.rejectValue("age", "", "Это ФИО занято");
     }
 }
