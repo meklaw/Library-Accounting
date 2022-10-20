@@ -14,9 +14,7 @@
 
     <label for="age">Возраст:</label>
     <input type="number" th:field="*{age}" id="age">
-    <div style="color: red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">age
-        error
-    </div>
+    <div style="color: red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">age error</div>
     <br/>
 
     <input type="submit" value="Сохранить!">
