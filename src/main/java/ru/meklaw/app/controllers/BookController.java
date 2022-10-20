@@ -9,7 +9,7 @@ import ru.meklaw.app.dao.BookDAO;
 import ru.meklaw.app.models.Book;
 
 @Controller
-@RequestMapping("/book")
+@RequestMapping("/books")
 public class BookController {
     private final BookDAO bookDAO;
 
