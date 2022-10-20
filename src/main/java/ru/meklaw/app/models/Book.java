@@ -1,21 +1,21 @@
 package ru.meklaw.app.models;
 
-import java.time.Year;
-
 public class Book {
     private int id;
     private String name;
     private String author;
-    private Year year;
+    private int year;
+    private int personId;
 
     public Book() {
     }
 
-    public Book(int id, String name, String author, Year year) {
+    public Book(int id, String name, String author, int year, int personId) {
         this.id = id;
         this.name = name;
         this.author = author;
         this.year = year;
+        this.personId = personId;
     }
 
     public int getId() {
@@ -42,11 +42,19 @@ public class Book {
         this.author = author;
     }
 
-    public Year getYear() {
+    public int getYear() {
         return year;
     }
 
-    public void setYear(Year year) {
+    public void setYear(int year) {
         this.year = year;
+    }
+
+    public int getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(int personId) {
+        this.personId = personId;
     }
 }
