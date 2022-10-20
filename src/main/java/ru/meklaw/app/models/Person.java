@@ -7,10 +7,10 @@ import javax.validation.constraints.Size;
 
 public class Person {
     private int id;
-    @NotEmpty(message = "Full name should not be empty")
-    @Size(min = 3, max = 30, message = "Full name should to be between 3 and 120 characters")
+    @NotEmpty(message = "ФИО не должно быть пустым")
+    @Size(min = 3, max = 120, message = "ФИО должно быть от 3 до 120 символов")
     private String fullName;
-    @Min(value = 0, message = "Age should be greater than 0")
+    @Min(value = 0, message = "Возраст должен быть больше 0")
     private int age;
 
 
