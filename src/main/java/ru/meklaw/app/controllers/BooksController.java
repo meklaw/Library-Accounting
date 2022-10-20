@@ -6,15 +6,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.meklaw.app.dao.BookDAO;
-import ru.meklaw.app.models.Book;
 
 @Controller
 @RequestMapping("/books")
-public class BookController {
+public class BooksController {
     private final BookDAO bookDAO;
 
     @Autowired
-    public BookController(BookDAO bookDAO) {
+    public BooksController(BookDAO bookDAO) {
         this.bookDAO = bookDAO;
     }
 
