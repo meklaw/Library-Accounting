@@ -6,9 +6,9 @@
 </head>
 <body>
 
-<p th:text="${'Id: ' + person.getId()()}">VALUE</p>
+<p th:text="${'Id: ' + person.getId()}">VALUE</p>
 <p th:text="${'ФИО: ' + person.getFullName()}">VALUE</p>
-<p th:text="${'Дата рождения:' + person.getDateOfBirthday()}">VALUE</p>
+<p th:text="${'Дата рождения: ' + person.getAge()}">VALUE</p>
 
 <a th:href="@{/people/{id}/edit(id=${person.getId()})}">Изменить данные</a>
 <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
