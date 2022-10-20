@@ -3,25 +3,24 @@ package ru.meklaw.app.models;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.Date;
 
 
 public class Person {
     private int id;
-    @NotEmpty(message = "Name should not be empty")
-    @Size(min = 3, max = 30, message = "Name should to be between 3 and 30 characters")
+    @NotEmpty(message = "Full name should not be empty")
+    @Size(min = 3, max = 30, message = "Full name should to be between 3 and 120 characters")
     private String fullName;
     @Min(value = 0, message = "Age should be greater than 0")
-    private Date dateOfBirthday;
+    private int age;
 
 
     public Person() {
     }
 
-    public Person(int id, String fullName, Date dateOfBirthday) {
+    public Person(int id, String fullName, int age) {
         this.id = id;
         this.fullName = fullName;
-        this.dateOfBirthday = dateOfBirthday;
+        this.age = age;
     }
 
     public int getId() {
@@ -40,11 +39,11 @@ public class Person {
         this.fullName = fullName;
     }
 
-    public Date getDateOfBirthday() {
-        return dateOfBirthday;
+    public int getAge() {
+        return age;
     }
 
-    public void setDateOfBirthday(Date dateOfBirthday) {
-        this.dateOfBirthday = dateOfBirthday;
+    public void setAge(int age) {
+        this.age = age;
     }
 }
