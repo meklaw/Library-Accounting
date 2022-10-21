@@ -8,11 +8,12 @@
 
 <p th:text="${'Id: ' + book.getId()}">VALUE</p>
 <p th:text="${'Название: ' + book.getName()}">VALUE</p>
-<p th:text="${'Автор: ' + book.getAuthor()()}">VALUE</p>
+<p th:text="${'Автор: ' + book.getAuthor()}">VALUE</p>
 <p th:text="${'Год: ' + book.getYear()}">VALUE</p>
+<p th:text="${'Текущий владелец книги: ' + bookOwnerName}">VALUE</p>
 
-<a th:href="@{/people/{id}/edit(id=${book.getId()})}">Изменить данные</a>
-<form th:method="DELETE" th:action="@{/people/{id}(id=${book.getId()})}">
+<a th:href="@{/books/{id}/edit(id=${book.getId()})}">Изменить данные</a>
+<form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
     <input type="submit" value="Удалить">
 </form>
 </body>

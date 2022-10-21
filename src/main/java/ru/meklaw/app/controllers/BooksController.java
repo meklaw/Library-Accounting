@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.meklaw.app.dao.BookDAO;
+import ru.meklaw.app.dao.PersonDAO;
 import ru.meklaw.app.models.Book;
+import ru.meklaw.app.models.Person;
 
 import java.util.Optional;
 
@@ -15,10 +17,12 @@ import java.util.Optional;
 @RequestMapping("/books")
 public class BooksController {
     private final BookDAO bookDAO;
+    private final PersonDAO personDAO;
 
     @Autowired
-    public BooksController(BookDAO bookDAO) {
+    public BooksController(BookDAO bookDAO, PersonDAO personDAO) {
         this.bookDAO = bookDAO;
+        this.personDAO = personDAO;
     }
 
 
@@ -34,6 +38,13 @@ public class BooksController {
             return "books/show_error";
 
         model.addAttribute("book", showBook.get());
+
+        Optional<Person> bookOwner = personDAO.show(showBook.get().getPersonId());
+        if (bookOwner.isPresent())
+            model.addAttribute("bookOwnerName", bookOwner.get().getFullName());
+        else
+            model.addAttribute("bookOwnerName", "Отсутствует");
+
         return "books/show";
     }
 }
