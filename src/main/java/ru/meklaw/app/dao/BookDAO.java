@@ -29,4 +29,9 @@ public class BookDAO {
         return jdbcTemplate.query("select * from book where name = ?", new Object[]{name}, new BookMapper())
                 .stream().findAny();
     }
+
+    public void save(Book book) {
+        jdbcTemplate.update("INSERT INTO book(name, author, year) VALUES (?, ?, ?)",
+                book.getName(), book.getAuthor(), book.getYear());
+    }
 }
