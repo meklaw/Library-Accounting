@@ -30,6 +30,6 @@ public class BookValidator implements Validator {
         if (oldBookData.isPresent() && oldBookData.get().getName().equals(newBook.getName()))
             return;
         if (bookDAO.show(newBook.getName()).isPresent())
-            errors.rejectValue("age", "", "Это название занято");
+            errors.rejectValue("name", "", "Это название занято");
     }
 }
