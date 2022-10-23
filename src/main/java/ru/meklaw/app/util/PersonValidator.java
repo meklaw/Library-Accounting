@@ -30,6 +30,6 @@ public class PersonValidator implements Validator {
         if (oldPersonData.isPresent() && oldPersonData.get().getFullName().equals(newPersonData.getFullName()))
             return;
         if (personDAO.show(newPersonData.getFullName()).isPresent())
-            errors.rejectValue("age", "", "Это ФИО занято");
+            errors.rejectValue("fullName", "", "Это ФИО занято");
     }
 }
