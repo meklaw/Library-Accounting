@@ -3,14 +3,15 @@ package ru.meklaw.app.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import ru.meklaw.app.dao.BookDAO;
 import ru.meklaw.app.dao.PersonDAO;
 import ru.meklaw.app.models.Book;
 import ru.meklaw.app.models.Person;
+import ru.meklaw.app.util.BookValidator;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
@@ -18,11 +19,13 @@ import java.util.Optional;
 public class BooksController {
     private final BookDAO bookDAO;
     private final PersonDAO personDAO;
+    private final BookValidator bookValidator;
 
     @Autowired
-    public BooksController(BookDAO bookDAO, PersonDAO personDAO) {
+    public BooksController(BookDAO bookDAO, PersonDAO personDAO, BookValidator bookValidator) {
         this.bookDAO = bookDAO;
         this.personDAO = personDAO;
+        this.bookValidator = bookValidator;
     }
 
 
@@ -46,5 +49,20 @@ public class BooksController {
             model.addAttribute("bookOwnerName", "Отсутствует");
 
         return "books/show";
+    }
+
+    @GetMapping("/new")
+    public String newBook(@ModelAttribute("book") Book book) {
+        return "books/new";
+    }
+    @PostMapping()
+    public String create(@ModelAttribute("book") @Valid Book book,
+                         BindingResult bindingResult) {
+        bookValidator.validate(book, bindingResult);
+        if (bindingResult.hasErrors())
+            return "books/new";
+
+        bookDAO.save(book);
+        return "redirect:books";
     }
 }
