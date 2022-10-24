@@ -18,25 +18,25 @@ public class BookDAO {
     }
 
     public List<Book> index() {
-        return jdbcTemplate.query("select * from book", new BookMapper());
+        return jdbcTemplate.query("select * from book;", new BookMapper());
     }
 
     public Optional<Book> show(int id) {
-        return jdbcTemplate.query("select * from book where id = ?", new Object[]{id}, new BookMapper())
+        return jdbcTemplate.query("select * from book where id = ?;", new BookMapper(), id)
                 .stream().findAny();
     }
     public Optional<Book> show(String name) {
-        return jdbcTemplate.query("select * from book where name = ?", new Object[]{name}, new BookMapper())
+        return jdbcTemplate.query("select * from book where name = ?;", new BookMapper(), name)
                 .stream().findAny();
     }
 
     public void save(Book book) {
-        jdbcTemplate.update("INSERT INTO book(name, author, year) VALUES (?, ?, ?)",
+        jdbcTemplate.update("INSERT INTO book(name, author, year) VALUES (?, ?, ?);",
                 book.getName(), book.getAuthor(), book.getYear());
     }
 
     public void update(int id, Book book) {
-        jdbcTemplate.update("update book set name = ?, author = ?, year = ? where id = ?",
+        jdbcTemplate.update("update book set name = ?, author = ?, year = ? where id = ?;",
                 book.getName(), book.getAuthor(), book.getYear(), id);
     }
 
