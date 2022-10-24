@@ -12,7 +12,9 @@ import ru.meklaw.app.models.Person;
 import ru.meklaw.app.util.BookValidator;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/books")
@@ -31,7 +33,11 @@ public class BooksController {
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("books", bookDAO.index());
+        List<Book> allBooks = bookDAO.index();
+        model.addAttribute("freeBooks", allBooks.stream()
+                .filter(book -> book.getPersonId() == 0).collect(Collectors.toList()));
+        model.addAttribute("occupiedBooks", allBooks.stream()
+                .filter(book -> book.getPersonId() != 0).collect(Collectors.toList()));
         return "books/index";
     }
 

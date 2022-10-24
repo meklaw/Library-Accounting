@@ -5,13 +5,18 @@
     <title>Книги</title>
 </head>
 <body>
-
-<div th:each="book : ${books}">
+<p>Свободные книги:</p>
+<div th:each="book : ${freeBooks}">
     <a th:href="@{/books/{id}(id=${book.getId()})}"
        th:text="${book.getName() + ', ' + book.getAuthor() + ', ' + book.getYear()}">
     </a>
-    <div th:if="${book.getPersonId() == 0}" th:text="свободна">свободна</div>
-    <div th:if="${book.getPersonId() != 0}" th:text="занята">занята</div>
+</div>
+
+<p>Занятые книги:</p>
+<div th:each="book : ${occupiedBooks}">
+    <a th:href="@{/books/{id}(id=${book.getId()})}"
+       th:text="${book.getName() + ', ' + book.getAuthor() + ', ' + book.getYear()}">
+    </a>
 </div>
 
 <br/>
