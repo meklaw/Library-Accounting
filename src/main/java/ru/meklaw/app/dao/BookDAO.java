@@ -18,7 +18,7 @@ public class BookDAO {
     }
 
     public List<Book> index() {
-        return jdbcTemplate.query("select * from book;", new BookMapper());
+        return jdbcTemplate.query("select * from book order by name, author;", new BookMapper());
     }
 
     public Optional<Book> show(int id) {
