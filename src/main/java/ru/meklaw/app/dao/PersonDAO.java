@@ -24,16 +24,16 @@ public class PersonDAO {
     }
 
     public Optional<Person> show(int id) {
-        return jdbcTemplate.query("SELECT * FROM Person WHERE id = ?;", new Object[]{id}, new PersonMapper())
+        return jdbcTemplate.query("SELECT * FROM Person WHERE id = ?;", new PersonMapper(), id)
                 .stream().findAny();
     }
     public Optional<Person> show(String fullName) {
-        return jdbcTemplate.query("SELECT * FROM Person WHERE full_name = ?;", new Object[]{fullName}, new PersonMapper())
+        return jdbcTemplate.query("SELECT * FROM Person WHERE full_name = ?;",  new PersonMapper(), fullName)
                 .stream().findAny();
     }
 
     public void save(Person person) {
-        jdbcTemplate.update("INSERT INTO Person(full_name, age) VALUES (?, ?)",
+        jdbcTemplate.update("INSERT INTO Person(full_name, age) VALUES (?, ?);",
                 person.getFullName(), person.getAge());
     }
 
