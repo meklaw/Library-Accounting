@@ -34,6 +34,7 @@ public class BooksController {
         model.addAttribute("books", bookDAO.index());
         return "books/index";
     }
+
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
         Optional<Book> showBook = bookDAO.show(id);
@@ -55,6 +56,7 @@ public class BooksController {
     public String newBook(@ModelAttribute("book") Book book) {
         return "books/new";
     }
+
     @PostMapping()
     public String create(@ModelAttribute("book") @Valid Book book,
                          BindingResult bindingResult) {
@@ -63,6 +65,24 @@ public class BooksController {
             return "books/new";
 
         bookDAO.save(book);
-        return "redirect:books";
+        return "redirect:/books";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String edit(@PathVariable("id") int id, Model model) {
+        model.addAttribute("book", bookDAO.show(id).orElse(new Book()));
+        return "books/edit";
+    }
+
+    @PatchMapping("/{id}")
+    public String update(@ModelAttribute("book") @Valid Book book,
+                         BindingResult bindingResult,
+                         @PathVariable("id") int id) {
+        bookValidator.validate(book, bindingResult);
+        if (bindingResult.hasErrors())
+            return "books/edit";
+
+        bookDAO.update(id, book);
+        return "redirect:/books";
     }
 }
