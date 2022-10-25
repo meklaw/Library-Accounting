@@ -20,6 +20,10 @@ public class BookDAO {
     public List<Book> index() {
         return jdbcTemplate.query("select * from book order by name, author;", new BookMapper());
     }
+    public List<Book> index(int personId) {
+        return jdbcTemplate.query("select * from book where person_id = ? order by name, author;"
+                , new BookMapper(), personId);
+    }
 
     public Optional<Book> show(int id) {
         return jdbcTemplate.query("select * from book where id = ?;", new BookMapper(), id)
