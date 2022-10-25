@@ -1,31 +1,33 @@
 package ru.meklaw.app.controllers;
 
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.meklaw.app.dao.BookDAO;
 import ru.meklaw.app.dao.PersonDAO;
+import ru.meklaw.app.models.Book;
 import ru.meklaw.app.models.Person;
 import ru.meklaw.app.util.PersonValidator;
 
+import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
-/**
- * @author Neil Alishev
- */
 @Controller
 @RequestMapping("/people")
 public class PeopleController {
 
     private final PersonDAO personDAO;
+    private final BookDAO bookDAO;
     private final PersonValidator personValidator;
 
 
     @Autowired
-    public PeopleController(PersonDAO personDAO, PersonValidator personValidator) {
+    public PeopleController(PersonDAO personDAO, BookDAO bookDAO, PersonValidator personValidator) {
         this.personDAO = personDAO;
+        this.bookDAO = bookDAO;
         this.personValidator = personValidator;
     }
 
@@ -36,12 +38,16 @@ public class PeopleController {
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
-        Optional<Person> showPerson = personDAO.show(id);
+    public String show(@PathVariable("id") int personId, Model model) {
+        Optional<Person> showPerson = personDAO.show(personId);
         if (showPerson.isEmpty())
             return "people/show_error";
 
         model.addAttribute("person", showPerson.get());
+
+        List<Book> personBooks = bookDAO.index(personId);
+        model.addAttribute("books", personBooks);
+
         return "people/show";
     }
 
