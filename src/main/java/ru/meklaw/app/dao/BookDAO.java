@@ -39,9 +39,14 @@ public class BookDAO {
         jdbcTemplate.update("update book set name = ?, author = ?, year = ? where id = ?;",
                 book.getName(), book.getAuthor(), book.getYear(), id);
     }
-    public void update(int id, int personId) {
+    public void assign(int id, int personId) {
         jdbcTemplate.update("update book set person_id = ? where id = ?;",
                 personId, id);
+    }
+
+    public void release(int id) {
+        jdbcTemplate.update("update book set person_id = null where id = ?;",
+                id);
     }
 
     public void delete(int id) {
