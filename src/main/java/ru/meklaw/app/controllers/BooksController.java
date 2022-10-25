@@ -54,7 +54,7 @@ public class BooksController {
         Optional<Person> bookOwner = personDAO.show(showBook.get().getPersonId());
 
         if (bookOwner.isPresent())
-            model.addAttribute("bookOwnerName", bookOwner.get().getFullName());
+            model.addAttribute("owner", bookOwner.get());
         else
             model.addAttribute("people", personDAO.index());
 

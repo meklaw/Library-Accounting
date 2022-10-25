@@ -23,9 +23,12 @@
     </form>
 </div>
 
-<div th:if="${bookOwnerName}">
+<div th:if="${owner}">
     <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getId()})}">
-        <label for="person" th:text="'Текущий владелец книги: ' + ${bookOwnerName}"></label>
+        <label for="person">
+            Текущий владелец книги:
+            <a th:text="${owner.getFullName()}" th:href="@{/people/{id}(id=${owner.getId()})}"></a>
+        </label>
         <input type="submit" value="Освободить книгу!">
     </form>
 </div>
