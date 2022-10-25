@@ -50,13 +50,13 @@ public class BooksController {
             return "books/show_error";
 
         model.addAttribute("book", showBook.get());
-        model.addAttribute("people", personDAO.index());
 
         Optional<Person> bookOwner = personDAO.show(showBook.get().getPersonId());
+
         if (bookOwner.isPresent())
             model.addAttribute("bookOwnerName", bookOwner.get().getFullName());
         else
-            model.addAttribute("bookOwnerName", "Отсутствует");
+            model.addAttribute("people", personDAO.index());
 
         return "books/show";
     }
