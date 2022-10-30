@@ -1,24 +1,32 @@
 package ru.meklaw.app.models;
 
+
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 
+@Entity
+@Table(name = "person")
 public class Person {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NotEmpty(message = "ФИО не должно быть пустым")
     @Size(min = 3, max = 120, message = "ФИО должно быть от 3 до 120 символов")
+    @Column(name = "full_name")
     private String fullName;
     @Min(value = 0, message = "Возраст должен быть больше 0")
+    @Column(name = "age")
     private int age;
 
 
     public Person() {
     }
 
-    public Person(int id, String fullName, int age) {
-        this.id = id;
+    public Person(String fullName, int age) {
         this.fullName = fullName;
         this.age = age;
     }
