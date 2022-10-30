@@ -1,9 +1,11 @@
 package ru.meklaw.app.dao;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.meklaw.app.models.Person;
 
 import java.util.List;
@@ -12,23 +14,30 @@ import java.util.Optional;
 @Component
 public class PersonDAO {
     private final JdbcTemplate jdbcTemplate;
+    private final SessionFactory sessionFactory;
 
     @Autowired
-    public PersonDAO(JdbcTemplate jdbcTemplate) {
+    public PersonDAO(JdbcTemplate jdbcTemplate, SessionFactory sessionFactory) {
         this.jdbcTemplate = jdbcTemplate;
+        this.sessionFactory = sessionFactory;
     }
 
 
+    @Transactional(readOnly = true)
     public List<Person> index() {
-        return jdbcTemplate.query("SELECT * FROM Person;", new BeanPropertyRowMapper<>(Person.class));
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createQuery("select p from Person p", Person.class)
+                .getResultList();
     }
 
     public Optional<Person> show(int id) {
         return jdbcTemplate.query("SELECT * FROM Person WHERE id = ?;", new PersonMapper(), id)
                 .stream().findAny();
     }
+
     public Optional<Person> show(String fullName) {
-        return jdbcTemplate.query("SELECT * FROM Person WHERE full_name = ?;",  new PersonMapper(), fullName)
+        return jdbcTemplate.query("SELECT * FROM Person WHERE full_name = ?;", new PersonMapper(), fullName)
                 .stream().findAny();
     }
 
