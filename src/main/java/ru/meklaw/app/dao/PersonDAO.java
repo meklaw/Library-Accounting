@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@Deprecated
 public class PersonDAO {
     private final JdbcTemplate jdbcTemplate;
     private final SessionFactory sessionFactory;
@@ -31,9 +32,11 @@ public class PersonDAO {
                 .getResultList();
     }
 
+    @Transactional(readOnly = true)
     public Optional<Person> show(int id) {
-        return jdbcTemplate.query("SELECT * FROM Person WHERE id = ?;", new PersonMapper(), id)
-                .stream().findAny();
+        Session session = sessionFactory.getCurrentSession();
+
+        return Optional.ofNullable(session.get(Person.class, id));
     }
 
     public Optional<Person> show(String fullName) {
