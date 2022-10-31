@@ -5,10 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.meklaw.app.dao.BookDAO;
-import ru.meklaw.app.dao.PersonDAO;
 import ru.meklaw.app.models.Book;
 import ru.meklaw.app.models.Person;
+import ru.meklaw.app.service.BooksService;
+import ru.meklaw.app.service.PeopleService;
 import ru.meklaw.app.util.BookValidator;
 
 import javax.validation.Valid;
@@ -19,25 +19,25 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/books")
 public class BooksController {
-    private final BookDAO bookDAO;
-    private final PersonDAO personDAO;
+    private final BooksService booksService;
+    private final PeopleService peopleService;
     private final BookValidator bookValidator;
 
     @Autowired
-    public BooksController(BookDAO bookDAO, PersonDAO personDAO, BookValidator bookValidator) {
-        this.bookDAO = bookDAO;
-        this.personDAO = personDAO;
+    public BooksController(BooksService booksService, PeopleService peopleService, BookValidator bookValidator) {
+        this.booksService = booksService;
+        this.peopleService = peopleService;
         this.bookValidator = bookValidator;
     }
 
 
     @GetMapping()
     public String index(Model model) {
-        List<Book> allBooks = bookDAO.index();
+        List<Book> allBooks = booksService.findAll();
         model.addAttribute("freeBooks", allBooks.stream()
-                .filter(book -> book.getPersonId() == 0).collect(Collectors.toList()));
+                .filter(book -> book.getOwner() == null).collect(Collectors.toList()));
         model.addAttribute("occupiedBooks", allBooks.stream()
-                .filter(book -> book.getPersonId() != 0).collect(Collectors.toList()));
+                .filter(book -> book.getOwner() != null).collect(Collectors.toList()));
         return "books/index";
     }
 
@@ -45,18 +45,18 @@ public class BooksController {
     public String show(@PathVariable("id") int id,
                        Model model,
                        @ModelAttribute("person") Person person) {
-        Optional<Book> showBook = bookDAO.show(id);
+        Optional<Book> showBook = booksService.findOne(id);
         if (showBook.isEmpty())
             return "books/show_error";
 
         model.addAttribute("book", showBook.get());
 
-        Optional<Person> bookOwner = personDAO.show(showBook.get().getPersonId());
+        Person bookOwner = showBook.get().getOwner();
 
-        if (bookOwner.isPresent())
-            model.addAttribute("owner", bookOwner.get());
+        if (bookOwner != null)
+            model.addAttribute("owner", bookOwner);
         else
-            model.addAttribute("people", personDAO.index());
+            model.addAttribute("people", peopleService.findAll());
 
         return "books/show";
     }
@@ -73,13 +73,13 @@ public class BooksController {
         if (bindingResult.hasErrors())
             return "books/new";
 
-        bookDAO.save(book);
+        booksService.save(book);
         return "redirect:/books";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        model.addAttribute("book", bookDAO.show(id).orElse(new Book()));
+        model.addAttribute("book", booksService.findOne(id).orElse(new Book()));
         return "books/edit";
     }
 
@@ -91,26 +91,26 @@ public class BooksController {
         if (bindingResult.hasErrors())
             return "books/edit";
 
-        bookDAO.update(id, book);
+        booksService.update(id, book);
         return "redirect:/books";
     }
 
     @PatchMapping("/{id}/assign")
     public String assign(@ModelAttribute("person") Person person,
                          @PathVariable("id") int bookId) {
-        bookDAO.assign(bookId, person.getId());
+        booksService.assign(bookId, person);
         return "redirect:/books";
     }
 
     @PatchMapping("/{id}/release")
     public String release(@PathVariable("id") int bookId) {
-        bookDAO.release(bookId);
+        booksService.release(bookId);
         return "redirect:/books";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        bookDAO.delete(id);
+        booksService.delete(id);
         return "redirect:/books";
     }
 }

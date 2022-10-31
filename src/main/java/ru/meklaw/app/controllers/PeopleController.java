@@ -5,9 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.meklaw.app.dao.BookDAO;
 import ru.meklaw.app.models.Book;
 import ru.meklaw.app.models.Person;
+import ru.meklaw.app.service.BooksService;
 import ru.meklaw.app.service.PeopleService;
 import ru.meklaw.app.util.PersonValidator;
 
@@ -20,14 +20,14 @@ import java.util.Optional;
 public class PeopleController {
 
     private final PeopleService peopleService;
-    private final BookDAO bookDAO;
+    private final BooksService booksService;
     private final PersonValidator personValidator;
 
 
     @Autowired
-    public PeopleController(PeopleService peopleService, BookDAO bookDAO, PersonValidator personValidator) {
+    public PeopleController(PeopleService peopleService, BooksService booksService, PersonValidator personValidator) {
         this.peopleService = peopleService;
-        this.bookDAO = bookDAO;
+        this.booksService = booksService;
         this.personValidator = personValidator;
     }
 
@@ -45,7 +45,7 @@ public class PeopleController {
 
         model.addAttribute("person", showPerson.get());
 
-        List<Book> personBooks = bookDAO.index(personId);
+        List<Book> personBooks = booksService.findAllByOwner(peopleService.findOne(personId).orElseThrow());
         model.addAttribute("books", personBooks);
 
         return "people/show";
