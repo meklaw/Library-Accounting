@@ -2,11 +2,13 @@ package ru.meklaw.app.models;
 
 
 import org.hibernate.annotations.Cascade;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.List;
 
 
@@ -21,9 +23,12 @@ public class Person {
     @Size(min = 3, max = 120, message = "ФИО должно быть от 3 до 120 символов")
     @Column(name = "full_name")
     private String fullName;
-    @Min(value = 0, message = "Возраст должен быть больше 0")
-    @Column(name = "age")
-    private int age;
+
+    @NotNull(message = "Дата рождения не может быть пустой")
+    @Column(name = "date_of_birth")
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dateOfBirth;
 
     @OneToMany(mappedBy = "owner")
     @Cascade(org.hibernate.annotations.CascadeType.DELETE)
@@ -33,9 +38,9 @@ public class Person {
     public Person() {
     }
 
-    public Person(String fullName, int age) {
+    public Person(String fullName, Date dateOfBirth) {
         this.fullName = fullName;
-        this.age = age;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public int getId() {
@@ -54,12 +59,12 @@ public class Person {
         this.fullName = fullName;
     }
 
-    public int getAge() {
-        return age;
+    public Date getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public List<Book> getBooks() {
