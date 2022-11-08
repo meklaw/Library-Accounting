@@ -37,5 +37,7 @@
 10. Все поля валидируются - с помощью @Valid и Spring Validator.
 
 ## Планы:
+- [x] Заменить JDBC на Hibernate и Spring Data JPA.
+- [x] Переехать на Spring Boot.
 - [ ] Написать Dockerfile для сборки и запуска приложения.
 - [ ] Добавить авторизацию с помощью Spring Security.
